@@ -30,8 +30,7 @@ public slots:
     void on_changeColors_clicked();
     void on_setBomb_clicked();
     void on_resetBomb_clicked();
-    void on_showBomb_clicked();
-    void on_hideBomb_clicked();
+    void on_bombToggled(bool state);
     void on_startMoving_clicked();
 
 private:

@@ -38,9 +38,15 @@ void MainWindow::setupUI()
 
     createAndAddButton( tr("cambia colori"), SLOT(on_changeColors_clicked()), buttonContainer, true );
     m_btn_setBomb = createAndAddButton( tr("posiziona bomba"), SLOT(on_setBomb_clicked()), buttonContainer, true );
+
     m_disabledButtons = new ButtonList;
-    (*m_disabledButtons) << createAndAddButton( tr("mostra bomba"), SLOT(on_showBomb_clicked()), buttonContainer, false );
-    (*m_disabledButtons) << createAndAddButton( tr("nascondi bomba"), SLOT(on_hideBomb_clicked()), buttonContainer, false );
+
+    QPushButton* toggle = new QPushButton( tr("mostra bomba") );
+    toggle->setCheckable(true);
+    connect( toggle, SIGNAL(toggled(bool)), this, SLOT(on_bombToggled(bool)) );
+    buttonContainer->addWidget(toggle);
+
+    (*m_disabledButtons) << toggle;
     m_btn_startMoving = createAndAddButton( tr("spostamento temporizzato"), SLOT(on_startMoving_clicked()), buttonContainer, false );
     (*m_disabledButtons) << m_btn_startMoving;
 
@@ -117,15 +123,18 @@ void MainWindow::on_resetBomb_clicked()
     setBombPosition();
 }
 
-void MainWindow::on_showBomb_clicked()
+void MainWindow::on_bombToggled(bool state)
 {
-    m_chessboard->showBomb();
+    if( state )
+    {
+        m_chessboard->showBomb();
+    }
+    else
+    {
+        m_chessboard->hideBomb();
+    }
 }
 
-void MainWindow::on_hideBomb_clicked()
-{
-    m_chessboard->hideBomb();
-}
 
 void MainWindow::on_startMoving_clicked()
 {
