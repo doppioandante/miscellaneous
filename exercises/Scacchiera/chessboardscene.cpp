@@ -7,7 +7,7 @@
 #include <cmath>
 
 ChessboardScene::ChessboardScene(uint cells, uint cellSize, QObject *parent):
-    QGraphicsScene( 0, 0, cellSize*cells, cellSize*cells ),
+    QGraphicsScene( 0, 0, cellSize*cells, cellSize*cells, parent ),
     m_cells( cells ),
     m_cellSize( cellSize ),
     m_bombItem( 0 )
@@ -16,6 +16,23 @@ ChessboardScene::ChessboardScene(uint cells, uint cellSize, QObject *parent):
 
 void ChessboardScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
+    class BitFlipper
+    {
+    public:
+        BitFlipper( bool defaultValue ):
+            m_value( !defaultValue )
+        {}
+
+        bool operator () ( )
+        {
+            m_value = !m_value;
+            return m_value;
+        }
+
+    private:
+        bool m_value;
+    };
+
     painter->save();
 
     painter->fillRect( rect, firstColor() );
@@ -23,9 +40,10 @@ void ChessboardScene::drawBackground(QPainter *painter, const QRectF &rect)
     qreal cellWidth = width()/cells();
     qreal cellHeight = height()/cells();
 
+    BitFlipper flipBit( false );
     for( qreal x = 0; x < width(); x += cellWidth )
     {
-        for( qreal y = std::fmod( x, cellHeight*2 ); y < height(); y += cellHeight*2 )
+        for( qreal y = cellHeight * flipBit(); y < height(); y += cellHeight*2 )
         {
             painter->fillRect( x, y, cellWidth, cellHeight, secondColor() );
         }

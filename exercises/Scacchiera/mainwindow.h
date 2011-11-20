@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <ui_mainwindow.h>
 #include <QWidget>
 #include <QString>
 #include <QList>
@@ -20,8 +21,6 @@ public:
 
 private:
     void setupUI();
-    QPushButton* createAndAddButton( const QString& text, const char* member, QLayout* layout, bool isEnabled );
-
     void setBombPosition();
 
 signals:
@@ -29,15 +28,16 @@ signals:
 public slots:
     void on_changeColors_clicked();
     void on_setBomb_clicked();
-    void on_resetBomb_clicked();
-    void on_bombToggled(bool state);
+    void on_bombToggled_clicked(bool checked);
     void on_startMoving_clicked();
+    void resetBomb_clicked();
 
 private:
     typedef QList<QColor> ColorList;
     ColorList m_colors;
 
-    QGraphicsView* m_view;
+    Ui::MainWindow m_ui;
+
     ChessboardScene* m_chessboard;
 
     QPushButton* m_btn_setBomb;

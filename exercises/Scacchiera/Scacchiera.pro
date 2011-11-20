@@ -14,6 +14,12 @@ HEADERS += \
 RESOURCES += \
     bomb.qrc
 
+FORMS += \
+    mainwindow.ui
+
+
+
+
 
 
 

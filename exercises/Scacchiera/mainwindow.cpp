@@ -15,6 +15,9 @@ MainWindow::MainWindow(uint cells, uint cellSize, QWidget *parent) :
     QWidget(parent)
 {
     using namespace Qt;
+
+    setupUI();
+
 #define QC(x) QColor(x)
     m_colors << QC(black) << QC(yellow) << QC(red) << QC(blue)
              << QC(magenta) << QC(green);
@@ -24,52 +27,31 @@ MainWindow::MainWindow(uint cells, uint cellSize, QWidget *parent) :
     assert( m_colors.size() >= 2 );
     m_chessboard->setFirstColor( m_colors[0] );
     m_chessboard->setSecondColor( m_colors[1] );
-    setupUI();
-    m_view->setScene( m_chessboard );
-    m_view->setRenderHints( QPainter::Antialiasing );
+
+    uint sceneSize = m_chessboard->cells() * m_chessboard->cellSize();
+    m_ui.graphicsView->setMaximumSize( sceneSize, sceneSize );
+    m_ui.graphicsView->setScene( m_chessboard );
+    m_ui.graphicsView->setRenderHints( QPainter::Antialiasing );
 }
 
 void MainWindow::setupUI()
 {
+    m_ui.setupUi( this );
     setWindowTitle( "Scacchiera" );
 
     QHBoxLayout* buttonContainer = new QHBoxLayout;
     buttonContainer->setAlignment( Qt::AlignCenter );
 
-    createAndAddButton( tr("cambia colori"), SLOT(on_changeColors_clicked()), buttonContainer, true );
-    m_btn_setBomb = createAndAddButton( tr("posiziona bomba"), SLOT(on_setBomb_clicked()), buttonContainer, true );
+    m_btn_setBomb = m_ui.setBomb;
+    m_btn_startMoving = m_ui.startMoving;
 
     m_disabledButtons = new ButtonList;
 
-    QPushButton* toggle = new QPushButton( tr("mostra bomba") );
-    toggle->setCheckable(true);
-    connect( toggle, SIGNAL(toggled(bool)), this, SLOT(on_bombToggled(bool)) );
-    buttonContainer->addWidget(toggle);
+    (*m_disabledButtons) << m_ui.bombToggled;
+    (*m_disabledButtons) << m_ui.startMoving;
 
-    (*m_disabledButtons) << toggle;
-    m_btn_startMoving = createAndAddButton( tr("spostamento temporizzato"), SLOT(on_startMoving_clicked()), buttonContainer, false );
-    (*m_disabledButtons) << m_btn_startMoving;
-
-    m_view = new QGraphicsView( this );
-    m_view->setFrameStyle( QFrame::NoFrame );
-    uint sceneSize = m_chessboard->cells() * m_chessboard->cellSize();
-    m_view->setMaximumSize( sceneSize, sceneSize );
-
-    QVBoxLayout* vbox = new QVBoxLayout;
-    vbox->setAlignment( Qt::AlignCenter );
-    vbox->addLayout( buttonContainer );
-    vbox->addWidget( m_view );
-
-    setLayout( vbox );
-}
-
-inline QPushButton* MainWindow::createAndAddButton( const QString& text, const char* member, QLayout* layout, bool isEnabled )
-{
-    QPushButton* button = new QPushButton( text, this );
-    button->setEnabled( isEnabled );
-    connect( button, SIGNAL(clicked()), this, member );
-    layout->addWidget( button );
-    return button;
+    m_ui.horizontalLayout->setAlignment( Qt::AlignCenter );
+    m_ui.verticalLayout->setAlignment( Qt::AlignCenter );
 }
 
 void MainWindow::setBombPosition()
@@ -115,17 +97,17 @@ void MainWindow::on_setBomb_clicked()
     delete m_disabledButtons;
 
     disconnect( m_btn_setBomb, SIGNAL(clicked()), this, SLOT(on_setBomb_clicked()) );
-    connect( m_btn_setBomb, SIGNAL(clicked()), SLOT(on_resetBomb_clicked()) );
+    connect( m_btn_setBomb, SIGNAL(clicked()), SLOT(resetBomb_clicked()) );
 }
 
-void MainWindow::on_resetBomb_clicked()
+void MainWindow::resetBomb_clicked()
 {
     setBombPosition();
 }
 
-void MainWindow::on_bombToggled(bool state)
+void MainWindow::on_bombToggled_clicked(bool checked)
 {
-    if( state )
+    if( checked )
     {
         m_chessboard->showBomb();
     }
@@ -139,8 +121,9 @@ void MainWindow::on_bombToggled(bool state)
 void MainWindow::on_startMoving_clicked()
 {
     QTimer* timer = new QTimer( this );
-    connect( timer, SIGNAL(timeout()), this, SLOT(on_resetBomb_clicked()) );
+    connect( timer, SIGNAL(timeout()), this, SLOT(resetBomb_clicked()) );
     timer->start( 20 * 1000 );
 
     disconnect( m_btn_startMoving, SIGNAL(clicked()), this, SLOT(on_startMoving_clicked()) );
 }
+
