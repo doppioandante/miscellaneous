@@ -17,6 +17,12 @@ RESOURCES += \
 FORMS += \
     mainwindow.ui
 
+OTHER_FILES += \
+    README
+
+
+
+
 
 
 

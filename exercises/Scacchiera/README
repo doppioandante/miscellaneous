@@ -1,0 +1,6 @@
+A simple exercise that uses some nice features of Qt, such as:
+- QGraphicsScene::drawBackground() to draw the chessboard
+- QGraphicsScene::mouseMoveEvent to catch mouse motion on the bomb
+- QPixmapItem to draw the bomb image
+- Button handling( toggling, enabling/disabling )
+- Using of connect() and disconnect()
