@@ -39,9 +39,6 @@ void MainWindow::setupUI()
     m_ui.setupUi( this );
     setWindowTitle( "Scacchiera" );
 
-    QHBoxLayout* buttonContainer = new QHBoxLayout;
-    buttonContainer->setAlignment( Qt::AlignCenter );
-
     m_btn_setBomb = m_ui.setBomb;
     m_btn_startMoving = m_ui.startMoving;
 
