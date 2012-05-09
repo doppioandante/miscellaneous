@@ -5,9 +5,10 @@ from itertools import combinations_with_replacement, izip
 def is_palindrome(number):
 	toStr = str(number)
 	
-	indices = xrange(0,len(toStr))
+	indices = xrange(0,len(toStr)//2)
+	rev_indices = reversed(xrange(len(toStr)//2, len(toStr)))
 	
-	for i, j in izip(indices, reversed(indices)):
+	for i, j in izip(indices, rev_indices):
 		if toStr[i] != toStr[j]:
 			return False
 			
