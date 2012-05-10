@@ -9,7 +9,7 @@
 # 2 | F(3k+1) + F(3k) + F(3k+1)
 # 2 | 2*F(3k+1) + F(3k) ; 2|2*F(3k+1) and F(3k) (for inductive hypotesis)
 # then 2 | F(k*3)
- 
+
 # F(3k) = F(3k-1) + F(3k-2) = F(3k-2) + F(3k-3) + F(3k-2) =
 # = 2*F(3k-2) + F(3k-3) = 2*[F(3k-3)+F(3k-4)] + F(3k-3) =
 # = 3*F(3k-3) + 2*[F(3k-4)] = 3*F(3k-3) + (F(3k-4) + F(3k-5)) +F(3k-6) =
@@ -24,7 +24,7 @@ b = 2
 sum = 0
 
 while a < limit:
-	sum += a
-	a, b = b, 4*b+a
-	
+    sum += a
+    a, b = b, 4*b+a
+
 print sum

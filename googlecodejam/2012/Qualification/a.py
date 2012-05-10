@@ -8,7 +8,7 @@ translation_table = OrderedDict(zip(original, translated))
 T = input()
 
 for t in xrange(1, T+1):
-	string = raw_input()
-	result = "".join([translation_table[x] for x in string])
-	
-	print "Case #{0}: {1}".format(t, result)
+    string = raw_input()
+    result = "".join([translation_table[x] for x in string])
+
+    print "Case #{0}: {1}".format(t, result)
