@@ -11,7 +11,7 @@ except:
 
 def combinations(n, k):
     den1 = min(k, n-k)
-    den2 = max(k, n-k)
+    den2 = n - den1
 
     num  = 1
     for p in xrange(den2+1, n+1):
