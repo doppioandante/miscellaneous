@@ -14,17 +14,20 @@
 # = 2*F(3k-2) + F(3k-3) = 2*[F(3k-3)+F(3k-4)] + F(3k-3) =
 # = 3*F(3k-3) + 2*[F(3k-4)] = 3*F(3k-3) + (F(3k-4) + F(3k-5)) +F(3k-6) =
 # = 4*F(3k-3) + F(3k-6) = 4*F(3(k-1)) + F(3(k-2))
-# EF(n)=F(n/3) -> E(n) = 4*E(n-1) + E(n-2)
+# E(n)=F(n/3) -> E(n) = 4*E(n-1) + E(n-2)
 
+from itertools import takewhile
 
-limit = 4000000
+def evenFibonacciGenerator():
+    fib1 = 0
+    fib2 = 2
+    while True:
+        yield fib1
+        fib1, fib2 = fib2, 4*fib2 + fib1
 
-a = 0
-b = 2
+upTo = 4000000
 sum = 0
-
-while a < limit:
-    sum += a
-    a, b = b, 4*b+a
-
-print sum
+for fib in takewhile(lambda x: x <= upTo, evenFibonacciGenerator()):
+    sum += fib
+    
+print(sum)

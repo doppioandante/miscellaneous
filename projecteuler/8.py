@@ -1,3 +1,6 @@
+from operator import mul
+from functools import reduce
+
 number = """
 73167176531330624919225119674426574742355349194934
 96983520312774506326239578318016984801869478851843
@@ -18,16 +21,13 @@ number = """
 07198403850962455444362981230987879927244284909188
 84580156166097919133875499200524063689912560717606
 05886116467109405077541002256983155200055935729725
-71636269561882670428252483600823257530420752963450"""
+71636269561882670428252483600823257530420752963450""".replace("\n","")
 
-number = number.replace("\n", "")
 result = 0
 
-
-for index in xrange(0, len(number)-4):
-    five_digits = (int(x) for x in number[index:index+5])
-    product = reduce(lambda a, b: a * b, five_digits)
-
+assert len(number) >= 5
+for index in range(0, len(number)-5):
+    product = reduce(mul, (int(x) for x in number[index:index+5]))
     result = max(result, product)
 
-print result
+print(result)

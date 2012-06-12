@@ -1,3 +1,9 @@
 n = 100
 
-print (n*(n+1)/2)**2 - (n*(n+1)*(2*n+1)/6)
+def sumUpTo(n):
+    return n*(n+1) // 2
+
+def sumSquaresUpTo(n):
+    return n*(n+1)*(2*n+1) // 6
+
+print(sumUpTo(n)**2 - sumSquaresUpTo(n))

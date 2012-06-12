@@ -1,5 +1,10 @@
 from collections import defaultdict
+from itertools import chain
+from functools import reduce
+from operator import mul
 
+# list of factors for the numbers from 2 to 20
+# each factor is in the form (prime_factor, exponent)
 factor_list = [
     [(2, 1)],
     [(3, 1)],
@@ -24,8 +29,8 @@ factor_list = [
 
 # Compute lcm
 lcm = defaultdict(lambda: 0)
-for factors in factor_list:
-    for factor, exp in factors:
-        lcm[factor] = max(lcm[factor], exp)
+for base, exp in chain.from_iterable(factor_list):
+    lcm[base] = max(lcm[base], exp)
 
-print reduce(lambda a, b: a * b, (p ** e for p, e in lcm.iteritems()))
+# first compute base^exp for all the factor in lcm, then multiply them
+print(reduce(mul, (base ** exp for base, exp in lcm.items())))
