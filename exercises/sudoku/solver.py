@@ -1,81 +1,11 @@
-from itertools import product, chain
 from copy import deepcopy
-import cProfile
-import os
-from time import sleep
+from sudoku import Sudoku
 
 
-def as2dTuple(t):
-    argType = type(t)
-    
-    if argType is not tuple:
-        raise ValueError("Invalid position type, must be a 2d tuple, {0} passed"
-                         "instead".format(repr(argType)))
-
-    return t
-
-class Sudoku:
-    def __init__(self, values, unitRoot):
-        self.values = list(values)
-        self.unitRoot = unitRoot
-        self.unitSize = self.unitRoot * self.unitRoot
-        self.gridSize = self.unitSize * self.unitSize
-
-  
-    def __getitem__(self, pos):
-        i, j = as2dTuple(pos)
-
-        return self.values[self.unitSize * i + j]                  
-
-
-    def __setitem__(self, pos, element):
-        i, j = as2dTuple(pos)
-
-        self.values[self.unitSize * i + j] = element
-
-
-    def __str__(self, sep = "| ", invalid = " "):
-        result = ""
-
-        for i in range(self.unitSize):
-            for j in range(self.unitSize):
-                
-                element = str(self[i, j] if self[i, j] else invalid)
-
-                result += sep
-                result += element
-
-            result += sep
-            result += os.linesep
-
-        return result
-
-
-    def rowAt(self, i):
-        pos = self.unitSize * i
-        return self.values[pos : pos + self.unitSize]
-
-
-    def columnAt(self, j):
-        return self.values[j : : self.unitSize]
-
-
-    def regionAt(self, i, j):
-        # TODO: use rowAt
-        region_i = (i // self.unitRoot) * self.unitRoot * self.unitSize
-        region_j = (j // self.unitRoot) * self.unitRoot
-
-        region = []
-        for i in range(region_i, region_i + self.unitRoot*self.unitSize,
-                       self.unitSize):
-            pos = i + region_j
-            region.extend(self.values[pos : pos + self.unitRoot])
-
-        return region    
-
-        
 class SudokuSolver:
     def __init__(self, sudoku):
+        assert isinstance(sudoku, Sudoku)
+        
         self.sudoku = deepcopy(sudoku)
         self.orig_sudoku = sudoku
         
@@ -179,22 +109,3 @@ class SudokuSolver:
 ##                j = 0
 ##
 ##        return True        
-
-sudoku = Sudoku(
-    chain.from_iterable([
-        [7, 5, 6, 8, None, None, None, None, None],
-        [None, 9, 2, None, None, None, None, None, None],
-        [4, None, 3, None, 6, 7, None, 5, 2],
-        [None, 8, 9, 6, None, None, None, 3, None],
-        [None, None, None, 5, 9, 3, None, None, None],
-        [None, 7, None, None, None, 2, 9, 1, None],
-        [5, 2, None, 1, 3, None, 4, None, 9],
-        [None, None, None, None, None, None, 1, 2, None],
-        [None, None, None, None, None, 8, 7, 6, 5]
-    ]), 3)
-
-solver = SudokuSolver(sudoku)
-if solver.solve():
-    print(solver.sudoku)
-else:
-    print("Impossible sudoku")
