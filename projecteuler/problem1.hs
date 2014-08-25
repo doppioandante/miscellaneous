@@ -1,8 +1,4 @@
-sumMultiplesUpTo upto m = let n = (upto `div` m) in (`div` 2) $ m * n * (n+1)
+sumUpTo upto m = let n = (upto `div` m) in (`div` 2) $ m * n * (n+1)
 
-main = putStrLn $ show  result
-	where
-		result = 
-			let upto = 999
-			in sumMultiplesUpTo upto 3 + sumMultiplesUpTo upto 5 - sumMultiplesUpTo upto 15 
+main = putStrLn . show $ sumUpTo 999 3 + sumUpTo 999 5 - sumUpTo 999 15 
 			
