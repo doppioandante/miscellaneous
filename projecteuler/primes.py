@@ -82,7 +82,6 @@ class prime_generator:
                     limit = int(sqrt(n))
 
                     for prime in self.primes:
-                        if n == 15: print(prime, limit)
                         if n % prime == 0:
                             is_prime = False
 
