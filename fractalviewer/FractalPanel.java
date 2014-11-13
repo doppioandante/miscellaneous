@@ -48,20 +48,17 @@ public class FractalPanel extends JPanel
 
 	private class FractalPanelMouseListener extends MouseAdapter
 	{
-		public FractalPanelMouseListener()
-		{
-			this.totalScroll = 0.0;
-		}
-
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent event)
 		{
 			int amount = event.getWheelRotation();
 			final double factor = 0.5;
-			totalScroll += (double)amount * factor;
 			
 			Point2D zoomPoint = getDrawer().getScaledPoint(event.getPoint(), dimension);
-			getDrawer().setZoom(Math.exp(-totalScroll));
+
+			assert(getDrawer().getZoom() > 0.0);
+			getDrawer().setZoom(getDrawer().getZoom() * Math.exp(-amount));
+
 			Point2D origin = getDrawer().getOrigin();
 			Point2D zoomPoint2 = getDrawer().getScaledPoint(event.getPoint(), dimension);
 
@@ -100,7 +97,6 @@ public class FractalPanel extends JPanel
 			}
 		}
 
-		private double totalScroll;
 		private Point lastMousePos;
 	}
 	

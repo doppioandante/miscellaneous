@@ -8,12 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.NumberFormat;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 //TODO: change import granularity
 
-public class Fractal extends JFrame implements ActionListener, ChangeListener
+public class Fractal extends JFrame implements ActionListener//, ChangeListener
 {
 	public static void main(String[] args) throws Exception
 	{
@@ -41,7 +38,7 @@ public class Fractal extends JFrame implements ActionListener, ChangeListener
 	public Fractal()
 	{
 		super();
-        
+
         this.drawer = new HistogramMTMandelbrotDrawer(
                 new Point2D.Double(0.0, 0.0),
 				-2.0, 1.0, -1.0, 1.0,
@@ -121,29 +118,28 @@ public class Fractal extends JFrame implements ActionListener, ChangeListener
 		setTitle("Fractal Viewer");
 	}
 
-    public void actionPerformed(ActionEvent e)
-    {
-        if(e.getActionCommand().equals("reset"))
-        {
-            this.drawer.setOrigin(new Point2D.Double(0.0, 0.0));
-            this.drawer.setZoom(1.0);
-            this.panel.repaint();
-        }
-		else if(e.getActionCommand().equals("save"))
+	public void actionPerformed(ActionEvent event)
+	{
+		if(event.getActionCommand().equals("reset"))
 		{
-			BufferedImage img = new BufferedImage(
-				this.panel.getWidth(),
-				this.panel.getHeight(),
-				BufferedImage.TYPE_INT_RGB);
-
-			this.drawer.draw(img.createGraphics(), this.panel.getSize());
-			// TODO: rename file if existing(and maybe move this code in another class)
-			try{
-			ImageIO.write(img, "jpg", new File("fractal.jpg"));
-			}catch(Exception ex) {}
-			JOptionPane.showMessageDialog(this, "Fractal written to fractal.jpg");
+			this.drawer.setOrigin(new Point2D.Double(0.0, 0.0));
+			this.drawer.setZoom(1.0);
+			this.panel.repaint();
 		}
-    }
+		else if(event.getActionCommand().equals("save"))
+		{
+			String filename = "mandelbrot.jpg";
+			try
+			{
+				FractalSaver.save(filename, this.drawer, this.panel.getSize());
+				JOptionPane.showMessageDialog(this, "Fractal written to " + filename);
+			}
+			catch(Exception e)
+			{
+				// TODO: show an error dialog, more granularity on the exception
+			}
+		}
+	}
 
     private AbstractMTFractalDrawer drawer;
     private FractalPanel panel;
