@@ -39,13 +39,13 @@ public class Fractal extends JFrame implements ActionListener//, ChangeListener
 	{
 		super();
 
-        this.drawer = new HistogramMTMandelbrotDrawer(
-                new Point2D.Double(0.0, 0.0),
+		this.drawer = new HistogramMTMandelbrotDrawer(
+				new Point2D.Double(0.0, 0.0),
 				-2.0, 1.0, -1.0, 1.0,
 				1.0,
 				512,
 				Runtime.getRuntime().availableProcessors());
-		
+
 		createUI();
 		this.panel = new FractalPanel(
 				new Dimension(1024, 1024/3*2),
@@ -141,6 +141,6 @@ public class Fractal extends JFrame implements ActionListener//, ChangeListener
 		}
 	}
 
-    private AbstractMTFractalDrawer drawer;
-    private FractalPanel panel;
+	private AbstractMTFractalDrawer drawer;
+	private FractalPanel panel;
 }
