@@ -5,6 +5,8 @@
  * @see Queue
  * @see EmptyQueueException
  */
+package uni.lab11;
+
 public class ArQueue implements Queue
 {
     public ArQueue()
@@ -29,6 +31,7 @@ public class ArQueue implements Queue
     public Object dequeue() throws EmptyQueueException
     {
 	Object result = front();
+	mArray[mStartPos] = null;
 	mStartPos++;
 
 	return result;
