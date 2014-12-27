@@ -5,8 +5,6 @@
  * @see Queue
  * @see EmptyQueueException
  */
-package uni.lab11;
-
 public class ArQueue implements Queue
 {
     public ArQueue()

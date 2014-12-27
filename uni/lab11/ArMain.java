@@ -1,5 +1,3 @@
-package uni.lab11;
-
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
