@@ -46,8 +46,8 @@ public class ArQueue implements Queue
 	}
 	if (isFull())
 	{
-	    assert(INIT_CAPACITY != 0);
-	    resize();
+	    assert(INIT_CAPACITY != 0);    
+	    resize(mArray.length * RESIZE_FACTOR);
 	}
 
 	mArray[mStartPos + mLength] = obj;
@@ -72,20 +72,12 @@ public class ArQueue implements Queue
 	return mStartPos + mLength == mArray.length;
     }
 
-    private void resize()
-    {
-	resize(mArray.length * RESIZE_FACTOR);
-    }
-
     private void resize(int newCapacity)
     {
 	assert(newCapacity > mArray.length);
 
 	Object[] newArray = new Object[newCapacity];
-	for (int i = 0; i < mLength; i++)
-	{
-	    newArray[i] = mArray[mStartPos + i];
-	}
+	System.arraycopy(mArray, mStartPos, newArray, 0, mLength);
 
 	mArray = newArray;
     }
@@ -94,6 +86,6 @@ public class ArQueue implements Queue
     private int mLength;
     private int mStartPos;
 
-    private static int INIT_CAPACITY = 0xFF;
+    private static int INIT_CAPACITY = 256;
     private static int RESIZE_FACTOR = 2;
 }
