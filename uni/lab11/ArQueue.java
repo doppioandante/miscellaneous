@@ -38,19 +38,16 @@ public class ArQueue implements Queue
     @Override
     public void enqueue(Object obj)
     {
+	if (isEmpty())
+	{
+	    // just move the cursor to the front, so that we are more space-efficient
+	    mStartPos = 0;
+	    mLength = 0;
+	}
 	if (isFull())
 	{
-	    if (isEmpty())
-	    {
-		// just move the cursor to the front
-		assert(INIT_CAPACITY != 0);
-		mStartPos = 0;
-		mLength = 0;
-	    }
-	    else
-	    {
-		resize();
-	    }
+	    assert(INIT_CAPACITY != 0);
+	    resize();
 	}
 
 	mArray[mStartPos + mLength] = obj;
