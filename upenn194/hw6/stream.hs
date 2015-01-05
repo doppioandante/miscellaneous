@@ -19,3 +19,13 @@ streamFromSeed rule seed = Stream seed (streamFromSeed rule (rule seed))
 nats :: Stream Integer
 nats = streamFromSeed (+1) 0
 
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (Stream v1 nextStream) stream2 = 
+    Stream v1 (interleaveStreams stream2 nextStream) 
+
+-- all numbers are divided by 2^0, but even ones are divided by 2^1
+-- all even numbers are divided by 2^1, but every two of them are divided by 2^2
+-- ...
+-- Still I'm not so sure why this works. But I wrote it!
+ruler :: Stream Integer
+ruler = interleaveStreams (streamRepeat 0) (streamMap (+1) ruler)
