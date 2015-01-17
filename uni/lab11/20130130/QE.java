@@ -12,6 +12,18 @@ public class QE extends Q
       return array;
    }
 
+   public void enqueue(Object x)
+   {
+      if (x instanceof Comparable)
+      {
+         super.enqueue(x);
+      }
+      else
+      {
+         throw new IllegalArgumentException();
+      }
+   }
+
    public Object[] toSet()
    {
       Object[] sorted = toSortedArray();
