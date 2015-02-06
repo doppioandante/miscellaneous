@@ -1,3 +1,6 @@
+module Stream
+where
+
 data Stream a = Stream a (Stream a)
     deriving (Eq)
 
