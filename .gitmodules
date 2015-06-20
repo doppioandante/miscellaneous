@@ -1,0 +1,3 @@
+[submodule "opengl/test1/cmake"]
+	path = opengl/test1/cmake
+	url = https://github.com/tcbrindle/sdl2-cmake-scripts
