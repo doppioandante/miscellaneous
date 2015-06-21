@@ -20,6 +20,11 @@ public:
     std::stringstream ss;
     ss << m_stream.rdbuf();
 
+    if (m_stream.fail())
+    {
+      std::cerr << "Failure while  shader \"" << name << "\" from stream" << std::endl;
+    }
+
     GLuint shaderID = glCreateShader(shaderType);
     const char *data = ss.str().c_str();
     glShaderSource(shaderID, 1, (GLchar**) &data, nullptr);

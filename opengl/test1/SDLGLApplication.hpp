@@ -50,7 +50,7 @@ public:
                                 m_yPosition,
                                 m_width,
                                 m_height,
-                                SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+                                SDL_WINDOW_OPENGL);
     if (m_window == nullptr)
     {
       std::cerr << "Error during window creation: " << SDL_GetError() << std::endl;
@@ -104,21 +104,11 @@ public:
     return m_width;
   }
 
-  /*int32_t getXPosition() const
-  {
-    return m_xPosition;
-  }
-
-  int32_t getYPosition() const
-  {
-    return m_yPosition;
-  }*/
-
   void runLoop()
   {
     if (m_error)
     {
-      std::cerr << "Cannot run main loop because of errors occurring during initalization" << std::endl;
+      std::cerr << "Cannot run main loop because of errors occurring during initialization" << std::endl;
       return;
     }
 

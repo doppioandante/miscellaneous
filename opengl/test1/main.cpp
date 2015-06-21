@@ -17,7 +17,6 @@ private:
   GLuint vao;
   GLuint vbo;
   GLuint ebo;
-  double angle;
   GLfloat vertices[3*4];
   GLuint indices[6];
 
@@ -27,7 +26,6 @@ public:
                      SDL_WINDOWPOS_UNDEFINED,
                      SCREEN_WIDTH,
                      SCREEN_HEIGHT),
-    angle(0.0),
     vertices{0.5f,  0.5f, 0.0f,  // Top Right
              0.5f, -0.5f, 0.0f,  // Bottom Right
              -0.5f, -0.5f, 0.0f,  // Bottom Left
@@ -55,13 +53,13 @@ public:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(GLfloat), (GLvoid*)0);
       glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    glViewport(0, 0, SCREEN_HEIGHT, SCREEN_WIDTH);
   }
 
 protected:
   virtual void drawGLContext(SDL_GLContext&)
   {
-    glViewport(0, 0, getHeight(), getWidth());
-
     glClearColor(0.2f,0.2f,0.2f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -69,22 +67,8 @@ protected:
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
       glBindBuffer(GL_ARRAY_BUFFER, 0);
-
     glBindVertexArray(0);
-
-    angle += (2.0*M_PI * 0.001) / 5.0;
-
   }
-
-private:
-  static void rotate2(GLfloat* vec3, double theta)
-  {
-    using std::cos;
-    using std::sin;
-    vec3[0] = vec3[0]*cos(theta) - vec3[1]*sin(theta);
-    vec3[1] = vec3[1]*sin(theta) + vec3[1]*cos(theta);
-  }
-
 };
 
 int main()

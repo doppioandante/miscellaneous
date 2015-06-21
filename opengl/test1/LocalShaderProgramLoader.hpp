@@ -42,7 +42,7 @@ public:
     {
       std::string fullPathStr{(m_path / shaderInfo.second).string()};
       std::ifstream shaderStream{fullPathStr.c_str()};
-      if (shaderStream.bad())
+      if (shaderStream.fail())
       {
         std::cerr << "Could not open file: " << fullPathStr << std::endl;
       }
