@@ -1,0 +1,9 @@
+Springfield  Homer
+GothamCity   Batman
+Mouseton     MickeyMouse
+Duckburg     DonaldDuck
+Springfield  Bart
+GothamCity   Robin
+Mouseton     Goofy
+Duckburg     DaisyDuck
+Springfield  Marge

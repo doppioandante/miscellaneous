@@ -4,7 +4,7 @@ STR: .ascii "ABCdEfGHhgfzDcba"
 
 .bss
 .align 4
-TOTC: .word
+TOTC: .hword
 
 .align 4
 .space 1024
@@ -25,9 +25,9 @@ _start:
   bl COUP
   add sp, sp, #12
   ldr r0, =TOTC
-  ldr r0, [r0]
-
-FINE: b FINE
+  ldrh r0, [r0]
+  stmfd sp!, {r0}
+END: b END
 
 COUP:
   stmfd sp!, {fp, lr}
@@ -38,16 +38,16 @@ COUP:
   ldr r3, [FP, #12] @ SIZ
   add r2, r1, r3
   sub r2, r2, #1 @ r2 = V + SIZ - 1, last character
-  mov r3, r3, LSR #1 @ r3 = SIZ/2 = k
+  mov r3, r3, ASR #1 @ r3 = SIZ/2 = k
   mov r4, #0 @ TOTC = 0
 
 LOOP:
-  ldrb r5, [r1], #4 @ V[i++] = r5
-  ldrb r6, [r2], #-4 @ ...
+  ldrb r5, [r1], #1 @ V[i++] = r5
+  ldrb r6, [r2], #-1 @ ...
   sub r6, r6, #0x20 @ to uppercase
   cmp r5, r6
   addeq r4, r4, #1
-  sub r3, r3, #1
+  subs r3, r3, #1
   bne LOOP
 
   ldr r2, [FP, #8]
