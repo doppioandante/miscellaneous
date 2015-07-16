@@ -26,7 +26,8 @@ public:
     }
 
     GLuint shaderID = glCreateShader(shaderType);
-    const char *data = ss.str().c_str();
+    std::string sdata{ss.str()};
+    char *data = const_cast<char*>(sdata.c_str());
     glShaderSource(shaderID, 1, (GLchar**) &data, nullptr);
     glCompileShader(shaderID);
 
