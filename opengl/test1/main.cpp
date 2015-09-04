@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include <SDL_opengl.h>
+#include <SDL_timer.h>
 
 #include "SDLGLApplication.hpp"
 #include "LocalShaderProgramLoader.hpp"
@@ -18,7 +19,8 @@ private:
   GLuint vbo;
   GLuint ebo;
   GLfloat vertices[3*4];
-  GLuint indices[6];
+  GLuint indices[3];
+  GLuint shaderProgram;
 
 public:
   MyApplication():
@@ -26,16 +28,15 @@ public:
                      SDL_WINDOWPOS_UNDEFINED,
                      SCREEN_WIDTH,
                      SCREEN_HEIGHT),
-    vertices{0.5f,  0.5f, 0.0f,  // Top Right
-             0.5f, -0.5f, 0.0f,  // Bottom Right
-             -0.5f, -0.5f, 0.0f,  // Bottom Left
-             -0.5f,  0.5f, 0.0f},   // Top Left
-    indices{0, 1, 3,
-            1, 2, 3}
+    vertices{0.0f,  0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             -0.5f, -0.5f, 0.0f},
+    indices{0, 1, 2}
   {
     LocalShaderProgramLoader loader(SHADER_DIRECTORY);
-    GLuint shaderProgram = loader.loadShaders({{GL_VERTEX_SHADER, "vertexShader.glsl"},
+    shaderProgram = loader.loadShaders({{GL_VERTEX_SHADER, "vertexShader.glsl"},
                                                {GL_FRAGMENT_SHADER, "fragmentShader.glsl"}});
+
     glUseProgram(shaderProgram);
 
     glGenBuffers(1, &vbo);
@@ -60,12 +61,17 @@ public:
 protected:
   virtual void drawGLContext(SDL_GLContext&)
   {
+    GLint uniColorLocation = glGetUniformLocation(shaderProgram, "uniColor");
+    GLfloat time = (GLfloat) SDL_GetTicks();
+    glUniform4f(uniColorLocation, 0.0f, 0.0f, std::abs(std::sin(time/1000.0f)), 1.0f);
+
     glClearColor(0.2f,0.2f,0.2f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindVertexArray(vao);
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
       glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
   }

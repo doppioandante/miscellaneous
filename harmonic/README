@@ -1,0 +1,3 @@
+Simple simulation of two particles connected by an ideal spring, moving along
+a fixed axis.
+Plotted above is the absolute value of the position of the center of mass (clipped)
